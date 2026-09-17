@@ -10,6 +10,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
     const categories = await prisma.newsCategory.findMany();
     res.json(categories);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch categories' });
   }
 });
@@ -25,6 +26,7 @@ router.post('/', authenticate, async (req: Request, res: Response): Promise<void
     const category = await prisma.newsCategory.create({ data: { name } });
     res.status(201).json(category);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to create category' });
   }
 });
@@ -36,6 +38,7 @@ router.delete('/:id', authenticate, async (req: Request, res: Response): Promise
     await prisma.newsCategory.delete({ where: { id } });
     res.json({ message: 'Category deleted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to delete category' });
   }
 });

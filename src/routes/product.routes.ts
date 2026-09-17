@@ -13,6 +13,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
     });
     res.json(products);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 });
@@ -31,6 +32,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     }
     res.json(product);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch product' });
   }
 });
@@ -51,6 +53,7 @@ router.post('/', authenticate, async (req: Request, res: Response): Promise<void
     });
     res.status(201).json(product);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to create product' });
   }
 });
@@ -74,6 +77,7 @@ router.put('/:id', authenticate, async (req: Request, res: Response): Promise<vo
     });
     res.json(product);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to update product' });
   }
 });
@@ -85,6 +89,7 @@ router.delete('/:id', authenticate, async (req: Request, res: Response): Promise
     await prisma.product.delete({ where: { id } });
     res.json({ message: 'Product deleted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to delete product' });
   }
 });

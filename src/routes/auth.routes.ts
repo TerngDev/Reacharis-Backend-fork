@@ -41,6 +41,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       user: { id: user.id, email: user.email, name: user.name, role: user.role }
     });
   } catch (error) {
+    console.error(error);
     console.error('Login error:', error);
     res.status(500).json({ error: 'Server error during login' });
   }
@@ -69,6 +70,7 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json({ message: 'User created successfully', user: { id: user.id, email: user.email } });
   } catch (error) {
+    console.error(error);
     console.error('Register error:', error);
     res.status(500).json({ error: 'Failed to register user' });
   }
@@ -87,6 +89,7 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response): Promise
     });
     res.json(user);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch profile' });
   }
 });

@@ -16,6 +16,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
     });
     res.json(news);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch news' });
   }
 });
@@ -34,6 +35,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     }
     res.json(newsItem);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch news' });
   }
 });
@@ -59,6 +61,7 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
     });
     res.status(201).json(newsItem);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to create news' });
   }
 });
@@ -84,6 +87,7 @@ router.put('/:id', authenticate, async (req: Request, res: Response): Promise<vo
     });
     res.json(newsItem);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to update news' });
   }
 });
@@ -95,6 +99,7 @@ router.delete('/:id', authenticate, async (req: Request, res: Response): Promise
     await prisma.news.delete({ where: { id } });
     res.json({ message: 'News deleted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to delete news' });
   }
 });

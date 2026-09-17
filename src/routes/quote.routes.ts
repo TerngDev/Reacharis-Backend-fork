@@ -13,6 +13,7 @@ router.get('/', authenticate, async (req: Request, res: Response): Promise<void>
     });
     res.json(requests);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch requests' });
   }
 });
@@ -35,6 +36,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
     });
     res.status(201).json(request);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to create request' });
   }
 });
@@ -51,6 +53,7 @@ router.put('/:id', authenticate, async (req: Request, res: Response): Promise<vo
     });
     res.json(updatedRequest);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to update quote request' });
   }
 });

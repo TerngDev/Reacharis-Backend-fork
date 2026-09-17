@@ -16,6 +16,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
     
     res.json(settingsObj);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch settings' });
   }
 });
@@ -38,6 +39,7 @@ router.post('/', authenticate, async (req: Request, res: Response): Promise<void
     
     res.json({ success: true });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to update settings' });
   }
 });

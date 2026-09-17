@@ -9,6 +9,7 @@ import portfolioCategoryRoutes from './routes/portfolio-category.routes';
 import newsRoutes from './routes/news.routes';
 import newsCategoryRoutes from './routes/news-category.routes';
 import settingsRoutes from './routes/settings.routes';
+import { prisma } from './lib/prisma';
 
 dotenv.config();
 
@@ -44,6 +45,23 @@ app.use('/api/settings', settingsRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Reacharis Backend API is running' });
+});
+
+// Reports whether the service can actually reach the database. Only the error
+// code and name are exposed, never the connection string or its credentials.
+app.get('/api/health/db', async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: 'ok', database: 'connected' });
+  } catch (error: any) {
+    console.error(error);
+    res.status(503).json({
+      status: 'error',
+      database: 'unreachable',
+      code: error?.code ?? null,
+      name: error?.name ?? null,
+    });
+  }
 });
 
 app.listen(PORT, () => {

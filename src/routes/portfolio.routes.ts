@@ -13,6 +13,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
     });
     res.json(portfolios);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch portfolios' });
   }
 });
@@ -31,6 +32,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     }
     res.json(portfolio);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch portfolio' });
   }
 });
@@ -52,6 +54,7 @@ router.post('/', authenticate, async (req: Request, res: Response): Promise<void
     });
     res.status(201).json(portfolio);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to create portfolio' });
   }
 });
@@ -76,6 +79,7 @@ router.put('/:id', authenticate, async (req: Request, res: Response): Promise<vo
     });
     res.json(portfolio);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to update portfolio' });
   }
 });
@@ -87,6 +91,7 @@ router.delete('/:id', authenticate, async (req: Request, res: Response): Promise
     await prisma.portfolio.delete({ where: { id } });
     res.json({ message: 'Portfolio deleted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to delete portfolio' });
   }
 });

@@ -16,9 +16,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Browsers send an Origin with no trailing slash, so strip one if the
+// configured value carries it. Otherwise the comparison never matches and
+// every request is silently blocked with no CORS header at all.
 const allowedOrigins = (process.env.FRONTEND_URL || '')
   .split(',')
-  .map((origin) => origin.trim())
+  .map((origin) => origin.trim().replace(/\/+$/, ''))
   .filter(Boolean);
 
 app.use(

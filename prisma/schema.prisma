@@ -123,3 +123,9 @@ model QuoteRequest {
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
 }
+
+model SiteSetting {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}

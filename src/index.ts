@@ -8,6 +8,7 @@ import portfolioRoutes from './routes/portfolio.routes';
 import portfolioCategoryRoutes from './routes/portfolio-category.routes';
 import newsRoutes from './routes/news.routes';
 import newsCategoryRoutes from './routes/news-category.routes';
+import settingsRoutes from './routes/settings.routes';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use('/api/portfolio-categories', portfolioCategoryRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/news-categories', newsCategoryRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/settings', settingsRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Reacharis Backend API is running' });

@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------
+// ENUMS
+// ----------------------------------------------------
+enum Role {
+  SUPER_ADMIN
+  EDITOR
+}
+
+enum RequestType {
+  QUOTE
+  CONTACT
+}
+
+enum RequestStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+
+// ----------------------------------------------------
+// MODELS
+// ----------------------------------------------------
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(EDITOR)
+  news      News[]   // Relation: 1 User -> Many News
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id            String         @id @default(uuid())
+  title         String
+  slug          String         @unique
+  description   String         @db.Text
+  features      String[]       // Array of strings (PostgreSQL only)
+  coverImage    String
+  isActive      Boolean        @default(true)
+  images        ProductImage[]
+  quoteRequests QuoteRequest[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model ProductImage {
+  id           String  @id @default(uuid())
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId    String
+  imageUrl     String
+  altText      String?
+  displayOrder Int     @default(0)
+}
+
+model PortfolioCategory {
+  id         String      @id @default(uuid())
+  name       String
+  portfolios Portfolio[]
+}
+
+model Portfolio {
+  id             String            @id @default(uuid())
+  title          String
+  slug           String            @unique
+  clientName     String?
+  description    String            @db.Text
+  coverImage     String
+  completionDate DateTime?
+  category       PortfolioCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryId     String
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+}
+
+model NewsCategory {
+  id   String @id @default(uuid())
+  name String
+  news News[]
+}
+
+model News {
+  id          String       @id @default(uuid())
+  title       String
+  slug        String       @unique
+  content     String       @db.Text
+  excerpt     String?      @db.Text
+  coverImage  String?
+  author      User         @relation(fields: [authorId], references: [id])
+  authorId    String
+  category    NewsCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryId  String
+  isPublished Boolean      @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model QuoteRequest {
+  id                String        @id @default(uuid())
+  type              RequestType   @default(CONTACT)
+  name              String
+  company           String?
+  phone             String
+  email             String?
+  interestedProduct String?
+  product           Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId         String?
+  message           String?       @db.Text
+  status            RequestStatus @default(PENDING)
+  notes             String?       @db.Text // Internal notes for admins
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}

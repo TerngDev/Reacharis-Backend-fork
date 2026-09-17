@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "seed": "ts-node seed.ts"
+    "start": "prisma migrate deploy && node dist/index.js",
+    "seed": "ts-node seed.ts",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -33,5 +34,11 @@
     "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
+  },
+  "allowScripts": {
+    "@prisma/client@5.22.0": true,
+    "@prisma/engines@5.22.0": true,
+    "bcrypt@6.0.0": true,
+    "prisma@5.22.0": true
   }
 }
